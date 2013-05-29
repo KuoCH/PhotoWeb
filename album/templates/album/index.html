@@ -1,0 +1,9 @@
+{% if picture_list %}
+    <ul>
+    {% for picture in picture_list %}
+    <li><a href="/album/{{ picture.id }}/">{{ picture.title }}<img src="{{ picture.image.url }}" height="100" width="150"></a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No pictures are available.</p>
+{% endif %}

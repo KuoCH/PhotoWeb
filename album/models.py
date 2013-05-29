@@ -2,6 +2,10 @@ from django.db import models
 from django.utils import timezone
 import os
 
+# Receive the pre_delete signal and delete the file associated with the model instance.
+from django.db.models.signals import pre_delete
+from django.dispatch.dispatcher import receiver
+
 #unique name for upload file
 import uuid
 def get_file_path(instance, filename):
@@ -24,3 +28,9 @@ class Comment(models.Model):
     pub_date = models.DateTimeField('date published', default=timezone.now)
     def __unicode__(self):
         return self.description
+
+#Delete file when model delete
+@receiver(pre_delete, sender=Picture)
+def mymodel_delete(sender, instance, **kwargs):
+    # Pass false so FileField doesn't save the model.
+    instance.image.delete(False)
