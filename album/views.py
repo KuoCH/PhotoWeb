@@ -1,5 +1,6 @@
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, render_to_response
+from django.contrib.auth import authenticate, login
 from album.models import Picture, Comment
 from album.serializers import PictureSerializer, CommentSerializer
 from django.views.decorators.csrf import csrf_exempt
@@ -16,8 +17,16 @@ class JSONResponse(HttpResponse):
         super(JSONResponse, self).__init__(content, **kwargs)
 
 def index(request):
+    if request.user.is_authenticated():
+        ifadmin = True
+    else:
+        ifadmin = False
+    # Do something for anonymous users.
     picture_list = Picture.objects.all()
-    context = { 'picture_list' : picture_list }
+    context = { 
+            'picture_list' : picture_list,
+            'ifadmin' : ifadmin, 
+            }
     return render(request, 'album/index.html', context)
 
 def detail(request, picture_id):

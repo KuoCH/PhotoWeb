@@ -1,0 +1,33 @@
+body { font-family: Trebuchet MS,sans-serif; }
+
+td { 
+    width:300px; 
+    text-align:center;
+    font-size: 12px;
+    font-weight: bold; 
+}
+
+hr {
+    background-color:#d4d4d4;
+    color:#d4d4d4;
+    height:1px;
+    border:0px;
+    clear:both;
+}
+
+.title { font-size: 24px; }
+
+#comments {
+    border-collapse:collapse;
+    width:40%;
+    height:50px;
+    color:#4a4a4a;
+}
+
+#comments td {
+    border: 1px solid white;
+    text-align:center;
+    background-color:#cde5ff;
+}
+
+#warning { color: red; }

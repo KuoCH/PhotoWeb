@@ -1,9 +1,53 @@
-{% if picture_list %}
-    <ul>
-    {% for picture in picture_list %}
-    <li><a href="/album/{{ picture.id }}/">{{ picture.title }}<img src="{{ picture.image.url }}" height="100" width="150"></a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No pictures are available.</p>
-{% endif %}
+<!doctype html>
+{% load staticfiles %}
+{% load thumbnail %}
+<html lang="zh_tw">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width" />
+        <link rel="stylesheet" type="text/css" href="{% static 'album/style.css' %}" />
+        <title>Photo List</title>
+    </head>
+    <body>
+        <h1>Welcome!</h1>
+        <table>
+            {% if ifadmin %}
+            <tr>
+                <td></td>
+                <td></td>
+                <td style="text-align:right">
+                    <a href="/album/logout?next=/album/">Logout</a>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td style="text-align:right">Add</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td></td>
+                <td></td>
+                <td style="text-align:right">
+                    <a href="/album/login/?next=/album/">Login</a>
+                </td>
+            </tr>
+            {% endif %}
+
+            {% if picture_list %}
+                {% for picture in picture_list %}
+                    {% cycle '<tr>' '' '' %}
+                <td>
+                    <a href="/album/{{ picture.id }}/">
+                        {% thumbnail picture.image "300x300" crop="center" as im %}
+                        <img border="0" src="{{ im.url }}" height="{{ im.width }}" height="{{ im.height }}">
+                        {% endthumbnail %}
+                    </a>
+                </td>
+                    {% cycle '' '' '</tr>' %}
+                {% endfor %}
+            {% endif %}
+        </table>
+
+    </body>
+</html>
