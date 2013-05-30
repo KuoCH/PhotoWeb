@@ -3,7 +3,7 @@ from django.forms.models import modelformset_factory
 from django.shortcuts import render, get_object_or_404, render_to_response, redirect
 from django.contrib.auth import authenticate, login
 from album.models import Picture, Comment, PictureForm
-from album.serializers import PictureSerializer, CommentSerializer
+from album.serializers import PictureSerializer, CommentSerializer, CommentAddSerializer
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
@@ -67,6 +67,8 @@ def picture_list(request):
         serializer = PictureSerializer(picture, many=True)
         return JSONResponse(serializer.data)
     elif request.method == 'POST':
+        if not request.user.is_authenticated():
+            return redirect('index')
         data = JSONParser().parse(request)
         serializer = PictureSerializer(data=data)
         if serializer.is_valid():
@@ -87,6 +89,8 @@ def picture_detail(request, pk):
         return JSONResponse(serializer.data)
 
     elif request.method == 'PUT':
+        if not request.user.is_authenticated():
+            return redirect('index')
         data = JSONParser().parse(request)
         serializer = PictureSerializer(picture, data=data)
         if serializer.is_valid():
@@ -96,6 +100,8 @@ def picture_detail(request, pk):
             return JSONResponse(serializer.errors, status=400)
 
     elif request.method == 'DELETE':
+        if not request.user.is_authenticated():
+            return redirect('index')
         picture.delete()
         return HttpResponse(status=204)
 
@@ -134,6 +140,8 @@ def comment_detail(request, pk):
         return JSONResponse(serializer.data)
 
     elif request.method == 'PUT':
+        if not request.user.is_authenticated():
+            return redirect('index')
         data = JSONParser().parse(request)
         serializer = CommentSerializer(comment, data=data)
         if serializer.is_valid():
@@ -143,5 +151,7 @@ def comment_detail(request, pk):
             return JSONResponse(serializer.errors, status=400)
 
     elif request.method == 'DELETE':
+        if not request.user.is_authenticated():
+            return redirect('index')
         comment.delete()
         return HttpResponse(status=204)
