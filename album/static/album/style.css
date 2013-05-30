@@ -17,17 +17,17 @@ hr {
 
 .title { font-size: 24px; }
 
-#comments {
+#comments_table {
     border-collapse:collapse;
     width:40%;
     height:50px;
     color:#4a4a4a;
 }
 
-#comments td {
+#comments_table td {
     border: 1px solid white;
     text-align:center;
     background-color:#cde5ff;
 }
 
-#warning { color: red; }
+.warning { color: red; }

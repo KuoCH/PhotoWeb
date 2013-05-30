@@ -32,7 +32,15 @@ def index(request):
     return render(request, 'album/index.html', context)
 
 def detail(request, picture_id):
-    return HttpResponse("You're looking at picture %s." % picture_id) 
+    if request.user.is_authenticated():
+        ifadmin = True
+    else:
+        ifadmin = False
+    context = { 
+            'picture_id': picture_id,
+            'ifadmin' : ifadmin, 
+            }
+    return render(request, 'album/detail.html', context)
 
 def add(request):
     if not request.user.is_authenticated():
@@ -104,8 +112,10 @@ def comment_list(request):
         serializer = CommentSerializer(comments, many=True)
         return JSONResponse(serializer.data)
     elif request.method == 'POST':
+        print(request.raw_post_data)
         data = JSONParser().parse(request)
-        serializer = CommentSerializer(data=data)
+        serializer = CommentAddSerializer(data=data)
+        print(serializer.is_valid())
         if serializer.is_valid():
             serializer.save()
             return JSONResponse(serializer.data, status=201)
