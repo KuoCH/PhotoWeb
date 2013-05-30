@@ -17,7 +17,7 @@ def get_file_path(instance, filename):
 class Picture(models.Model):
     image = models.ImageField(upload_to=get_file_path)
     title = models.CharField(max_length=200)
-    description = models.TextField()
+    description = models.TextField(blank=True)
     pub_date = models.DateTimeField('date published', default=timezone.now)
     def __unicode__(self):
         return self.title

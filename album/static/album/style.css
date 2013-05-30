@@ -28,6 +28,7 @@ hr {
     border: 1px solid white;
     text-align:center;
     background-color:#cde5ff;
+    border-radius:25px;
 }
 
 .warning { color: red; }

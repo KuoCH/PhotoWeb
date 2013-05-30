@@ -6,7 +6,9 @@
     </head>
     <body>
         <form action="/album/add/" method="post" enctype="multipart/form-data">{% csrf_token %}
-            {{ form.as_p }}
+            <p>Upload Image:{{ form.image }}</p>
+            <p>Title:{{ form.title }}</p>
+            <p>Description:{{ form.description }}</p>
             <input type="submit" value="Submit" />
         </form>
     </body>
