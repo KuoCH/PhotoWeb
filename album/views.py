@@ -45,18 +45,7 @@ def detail(request, picture_id):
 def add(request):
     if not request.user.is_authenticated():
         return redirect('index')
-    
-    if request.method == 'POST':
-        form = PictureForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            # Redirect to the document list after POST
-            return redirect('index')
-        else:
-            form = PictureForm() # A empty, unbound form
-    else:
-        form = PictureForm() # A empty, unbound form
-
+    form = PictureForm() # A empty, unbound form
     # Render list page with the documents and the form
     return render_to_response('album/add.html',{'form': form}, context_instance=RequestContext(request))
 
@@ -69,13 +58,13 @@ def picture_list(request):
     elif request.method == 'POST':
         if not request.user.is_authenticated():
             return redirect('index')
-        data = JSONParser().parse(request)
-        serializer = PictureSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JSONResponse(serializer.data, status=201)
+        form = PictureForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            # Redirect to the document list after POST
+            return redirect('index')
         else:
-            return JSONResponse(serializer.errors, status=400)
+            return redirect('add')
 
 @csrf_exempt
 def picture_detail(request, pk):
