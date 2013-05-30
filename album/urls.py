@@ -11,4 +11,5 @@ urlpatterns = patterns('',
     url(r'^comments/(?P<pk>[0-9]+)/$', views.comment_detail),
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'album/login.html'}),
     url(r'^logout/$', 'django.contrib.auth.views.logout'),
+    url(r'^add/$', views.add, name='add'),
 )

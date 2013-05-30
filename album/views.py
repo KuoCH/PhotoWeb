@@ -1,11 +1,13 @@
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404, render_to_response
+from django.forms.models import modelformset_factory
+from django.shortcuts import render, get_object_or_404, render_to_response, redirect
 from django.contrib.auth import authenticate, login
-from album.models import Picture, Comment
+from album.models import Picture, Comment, PictureForm
 from album.serializers import PictureSerializer, CommentSerializer
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
+from django.template import RequestContext
 
 class JSONResponse(HttpResponse):
     """
@@ -32,6 +34,23 @@ def index(request):
 def detail(request, picture_id):
     return HttpResponse("You're looking at picture %s." % picture_id) 
 
+def add(request):
+    if not request.user.is_authenticated():
+        return redirect('index')
+    
+    if request.method == 'POST':
+        form = PictureForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            # Redirect to the document list after POST
+            return redirect('index')
+        else:
+            form = PictureForm() # A empty, unbound form
+    else:
+        form = PictureForm() # A empty, unbound form
+
+    # Render list page with the documents and the form
+    return render_to_response('album/add.html',{'form': form}, context_instance=RequestContext(request))
 
 @csrf_exempt
 def picture_list(request):

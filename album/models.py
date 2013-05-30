@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 import os
+from django import forms
 
 # Receive the pre_delete signal and delete the file associated with the model instance.
 from django.db.models.signals import pre_delete
@@ -34,3 +35,15 @@ class Comment(models.Model):
 def mymodel_delete(sender, instance, **kwargs):
     # Pass false so FileField doesn't save the model.
     instance.image.delete(False)
+
+def make_custom_datefield(f):
+    formfield = f.formfield()
+    if isinstance(f, models.DateField):
+        formfield.widget.format = '%m/%d/%Y'
+        formfield.widget.attrs.update({'class':'datePicker', 'readonly':'true'})
+    return formfield
+
+class PictureForm(forms.ModelForm):
+    class Meta:
+        model = Picture
+        field = ['image', 'title', 'description']
