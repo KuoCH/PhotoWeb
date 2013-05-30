@@ -19,7 +19,7 @@ function refresh_comments(){
         for(i=0;i<resource.length;i++){
             arow = "<tr id='comment'"+i+"><td>"+resource[i].author+"</td><td>"+resource[i].description+"</td><td>"+resource[i].pub_date+"</td>";
             if(ifadmin){
-                arow += "<td><button onclick='onDelete("+resource[i].id+")'>Delete</button></td>"
+                arow += "<td><button onclick='onDeleteComment("+resource[i].id+")'>Delete</button></td>"
             }
             arow += "</tr>";
             document.getElementById("comments_table").innerHTML += arow;
@@ -47,9 +47,18 @@ function onSubmit(){
     }).done(refresh_comments);
 }
 
-function onDelete(pk){
+function onDeleteComment(pk){
     $.ajax({
         type: "DELETE",
         url: "/album/comments/"+pk,
     }).done(refresh_comments);
+}
+
+function onDeletePicture(){
+    $.ajax({
+        type: "DELETE",
+        url: "/album/pictures/"+picture_id,
+    }).done(function(){
+        window.location = "/album/"
+    });
 }
