@@ -1,0 +1,14 @@
+you need have install the following lib
+  Python 2.7+  http://www.python.org/
+  Django 1.5.1+  https://www.djangoproject.com/
+  Django REST Framework  http://django-rest-framework.org/
+  PIL  http://www.pythonware.com/products/pil/
+  sorl-thumbnail  https://github.com/sorl/sorl-thumbnail
+
+After all done
+1. git clone https://github.com/KuoCH/PhotoWeb.git
+2. cd PhotoWeb
+3. python manage.py syndb
+  This step will help you setting account/password of superuser, which allow you to manage photos
+4. python manage.py runserver
+  Now, you can see the website at 127.0.0.1:8000
